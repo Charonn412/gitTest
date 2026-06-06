@@ -13,7 +13,7 @@ const Mechanics = (() => {
   function renderSort(activity, container, onComplete) {
     const { bins, items } = activity;
     const shuffled = [...items].sort(() => Math.random() - 0.5);
-    let current = 0, correct = 0;
+    let current = 0, correct = 0, waiting = false;
 
     container.innerHTML = `
       <div class="activity-wrap">
@@ -21,17 +21,19 @@ const Mechanics = (() => {
         <p class="activity-instruction">${activity.instruction}</p>
         <div class="sort-wrap">
           <div class="sort-card-display">
-            <div class="sort-card-label">SORT THIS INTO →</div>
+            <div class="sort-card-label" id="sort-label">SORT THIS INTO →</div>
             <div class="sort-card-text" id="sort-text"></div>
-            <div class="sort-card-sub" id="sort-sub"></div>
           </div>
+          <div id="sort-explain-box" class="sort-explain-box hidden"></div>
           <div class="sort-progress" id="sort-prog"></div>
           <div class="sort-bins" id="sort-bins"></div>
           <div class="sort-score" id="sort-score"></div>
         </div>
       </div>`;
 
-    const binsEl = container.querySelector('#sort-bins');
+    const binsEl    = container.querySelector('#sort-bins');
+    const explainEl = container.querySelector('#sort-explain-box');
+
     bins.forEach(bin => {
       const el = document.createElement('div');
       el.className = 'sort-bin';
@@ -45,8 +47,12 @@ const Mechanics = (() => {
     });
 
     function handleBinClick(binId, binEl) {
+      if (waiting) return;          // block input while explanation is showing
+      waiting = true;
+
       const item = shuffled[current];
       const isCorrect = binId === item.bin;
+
       if (isCorrect) {
         correct++;
         binEl.classList.add('correct-flash');
@@ -54,31 +60,41 @@ const Mechanics = (() => {
       } else {
         binEl.classList.add('wrong-flash');
         Sound.play('wrong');
-        // also briefly highlight the correct bin
-        const correctEl = binsEl.querySelector(`[data-bin="${item.bin}"]`);
-        setTimeout(() => correctEl && correctEl.classList.add('correct-flash'), 400);
+        // highlight the correct bin after a beat
+        setTimeout(() => {
+          const correctEl = binsEl.querySelector(`[data-bin="${item.bin}"]`);
+          if (correctEl) correctEl.classList.add('correct-flash');
+        }, 300);
       }
 
-      // Show explanation momentarily
-      container.querySelector('#sort-sub').textContent = item.explain;
+      // Show explanation panel — user must tap to continue
+      const correctBin = bins.find(b => b.id === item.bin);
+      explainEl.className = `sort-explain-box ${isCorrect ? 'explain-correct' : 'explain-wrong'}`;
+      explainEl.innerHTML = `
+        <div class="explain-verdict">${isCorrect ? '✅ Correct!' : `❌ That belongs in: ${correctBin.label}`}</div>
+        <div class="explain-text">${item.explain}</div>
+        <button class="btn-primary explain-next-btn" id="explain-next">
+          ${current + 1 < shuffled.length ? 'Next →' : 'Finish ✓'}
+        </button>`;
 
-      setTimeout(() => {
-        document.querySelectorAll('.sort-bin').forEach(b => {
-          b.classList.remove('correct-flash', 'wrong-flash');
-        });
+      container.querySelector('#explain-next').addEventListener('click', () => {
+        explainEl.className = 'sort-explain-box hidden';
+        binsEl.querySelectorAll('.sort-bin').forEach(b =>
+          b.classList.remove('correct-flash', 'wrong-flash'));
+        waiting = false;
         current++;
         if (current < shuffled.length) {
           showItem();
         } else {
           onComplete({ score: correct, maxScore: shuffled.length });
         }
-      }, isCorrect ? 900 : 1800);
+      });
     }
 
     function showItem() {
       const item = shuffled[current];
       container.querySelector('#sort-text').textContent = item.text;
-      container.querySelector('#sort-sub').textContent = '';
+      container.querySelector('#sort-label').textContent = 'SORT THIS INTO →';
       container.querySelector('#sort-prog').textContent = `${current + 1} of ${shuffled.length}`;
       container.querySelector('#sort-score').textContent = `✓ ${correct} correct`;
     }

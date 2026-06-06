@@ -335,6 +335,38 @@ html, body {
 .sort-score { font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--muted); }
 .sort-progress { font-size: 13px; color: var(--muted); }
 
+/* ── Sort explanation panel (tap to continue) ── */
+.sort-explain-box {
+  width: 100%; max-width: 520px;
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex; flex-direction: column; gap: 12px;
+  animation: slideUp 0.25s ease;
+}
+.sort-explain-box.hidden { display: none; }
+.sort-explain-box.explain-correct {
+  background: rgba(16,185,129,0.12);
+  border: 2px solid var(--green);
+}
+.sort-explain-box.explain-wrong {
+  background: rgba(239,68,68,0.10);
+  border: 2px solid var(--red);
+}
+.explain-verdict {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 15px; font-weight: 700;
+}
+.explain-correct .explain-verdict { color: var(--green); }
+.explain-wrong   .explain-verdict { color: var(--red); }
+.explain-text {
+  font-size: 15px; line-height: 1.65; color: var(--text);
+}
+.explain-next-btn {
+  align-self: flex-end;
+  padding: 12px 28px; font-size: 15px;
+  min-height: 48px;
+}
+
 /* ── MECHANIC: CONNECT ──────────────────────── */
 .connect-wrap { display: flex; gap: 0; align-items: flex-start; position: relative; }
 .connect-col { display: flex; flex-direction: column; gap: 12px; flex: 1; }
