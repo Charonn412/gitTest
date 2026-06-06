@@ -1,15 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-<link rel="stylesheet" href="styles/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS IAM: Identity Command</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/game.css">
 </head>
 <body>
-    <h1>Welcome to my Website!</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora maxime neque cupiditate quia necessitatibus cum praesentium totam, odit nam dicta amet suscipit eum dolores quod laboriosam ad molestias cumque nulla?</p>
 
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-inner">
+      <div class="logo-badge">NEXUS CORP · CLASSIFIED</div>
+      <h1 class="game-title">IDENTITY<br><span class="accent">COMMAND</span></h1>
+      <p class="game-sub">You are NEXUS Corp's first IAM Director.<br>Build the identity program from scratch. Defend the org.</p>
+      <div id="home-stats" class="home-stats"></div>
+      <button class="btn-primary btn-xl" onclick="App.showMap()">▶ BEGIN MISSION</button>
+      <button class="btn-ghost" onclick="App.showAchievements()">🏆 Achievements</button>
+    </div>
+  </div>
+
+  <!-- MISSION MAP -->
+  <div id="screen-map" class="screen">
+    <div class="map-header">
+      <button class="btn-back" onclick="App.showHome()">← Home</button>
+      <div class="hud-inline">
+        <span id="map-level-label" class="level-label"></span>
+        <div class="xp-bar-wrap"><div id="map-xp-bar" class="xp-bar-fill"></div></div>
+        <span id="map-xp-label" class="xp-label"></span>
+      </div>
+    </div>
+    <h2 class="map-title">MISSION MAP</h2>
+    <div id="mission-grid" class="mission-grid"></div>
+  </div>
+
+  <!-- BRIEFING -->
+  <div id="screen-briefing" class="screen">
+    <div class="briefing-inner">
+      <div id="brief-badge" class="briefing-badge"></div>
+      <div id="brief-mission" class="briefing-mission"></div>
+      <h2 id="brief-title"></h2>
+      <p id="brief-context"></p>
+      <ul id="brief-bullets" class="brief-bullets"></ul>
+      <div class="briefing-actions">
+        <button class="btn-ghost" onclick="App.showMap()">← Map</button>
+        <button class="btn-primary" onclick="App.startMission()">BEGIN MISSION ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME AREA -->
+  <div id="screen-game" class="screen">
+    <div class="game-hud">
+      <button class="btn-back-sm" onclick="App.exitToMap()">✕ Exit</button>
+      <div class="hud-center">
+        <span id="game-mission-label" class="game-mission-label"></span>
+        <div class="activity-prog-wrap">
+          <div id="activity-prog-fill" class="activity-prog-fill"></div>
+        </div>
+        <span id="activity-prog-label" class="activity-prog-label"></span>
+      </div>
+      <div class="hud-right">
+        <span id="streak-display" class="streak-display">🔥 0</span>
+        <span id="score-display" class="score-display">0 XP</span>
+      </div>
+    </div>
+    <div id="game-content" class="game-content"></div>
+    <div id="feedback-overlay" class="feedback-overlay hidden">
+      <div id="feedback-card" class="feedback-card">
+        <div id="feedback-icon" class="feedback-icon"></div>
+        <h3 id="feedback-title"></h3>
+        <p id="feedback-body"></p>
+        <button class="btn-primary" onclick="App.nextActivity()">CONTINUE →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MISSION COMPLETE -->
+  <div id="screen-complete" class="screen">
+    <div class="complete-inner">
+      <div id="complete-stars" class="complete-stars"></div>
+      <h2 id="complete-title"></h2>
+      <div id="complete-xp" class="complete-xp"></div>
+      <div id="complete-concepts" class="complete-concepts"></div>
+      <div id="complete-achievements" class="complete-achievements"></div>
+      <div class="complete-actions">
+        <button class="btn-ghost" onclick="App.showMap()">← Mission Map</button>
+        <button class="btn-primary" id="btn-next-mission" onclick="App.nextMission()">Next Mission →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div id="screen-achievements" class="screen">
+    <div class="ach-header">
+      <button class="btn-back" onclick="App.showHome()">← Home</button>
+      <h2>ACHIEVEMENTS</h2>
+      <p id="ach-count"></p>
+    </div>
+    <div id="ach-grid" class="ach-grid"></div>
+  </div>
+
+  <script src="scripts/data.js"></script>
+  <script src="scripts/mechanics.js"></script>
+  <script src="scripts/engine.js"></script>
+  <script src="scripts/main.js"></script>
 </body>
 </html>
