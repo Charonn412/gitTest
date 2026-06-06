@@ -168,21 +168,30 @@ const Mechanics = (() => {
       }
     }
 
-    function drawLine(leftEl, rightEl, correct) {
+    function drawLine(leftEl, rightEl, isCorrect) {
+      // On desktop: draw SVG Bézier curve
       const svg = container.querySelector('#connect-svg');
-      const wrap = container.querySelector('#connect-wrap');
-      const wrapRect = wrap.getBoundingClientRect();
-      const lRect = leftEl.getBoundingClientRect();
-      const rRect = rightEl.getBoundingClientRect();
-      const x1 = lRect.right  - wrapRect.left;
-      const y1 = lRect.top + lRect.height / 2 - wrapRect.top;
-      const x2 = rRect.left  - wrapRect.left;
-      const y2 = rRect.top + rRect.height / 2 - wrapRect.top;
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      const mx = (x1 + x2) / 2;
-      line.setAttribute('d', `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
-      line.setAttribute('class', correct ? 'connect-line' : 'connect-line-pending');
-      svg.appendChild(line);
+      if (svg && window.innerWidth > 640) {
+        const wrap = container.querySelector('#connect-wrap');
+        const wrapRect = wrap.getBoundingClientRect();
+        const lRect = leftEl.getBoundingClientRect();
+        const rRect = rightEl.getBoundingClientRect();
+        const x1 = lRect.right  - wrapRect.left;
+        const y1 = lRect.top + lRect.height / 2 - wrapRect.top;
+        const x2 = rRect.left  - wrapRect.left;
+        const y2 = rRect.top + rRect.height / 2 - wrapRect.top;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const mx = (x1 + x2) / 2;
+        line.setAttribute('d', `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
+        line.setAttribute('class', isCorrect ? 'connect-line' : 'connect-line-pending');
+        svg.appendChild(line);
+      }
+      // On mobile: badge the right-side node with a match number
+      if (isCorrect) {
+        const n = container.querySelectorAll('.connect-node.matched').length;
+        leftEl.style.borderLeftColor = `var(--green)`;
+        rightEl.dataset.matchNum = n;
+      }
     }
   }
 

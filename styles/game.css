@@ -552,10 +552,71 @@ html, body {
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
 
-/* ── RESPONSIVE ─────────────────────────────── */
-@media (max-width: 600px) {
+/* ── RESPONSIVE / MOBILE ─────────────────────── */
+@media (max-width: 640px) {
+  html { font-size: 15px; }
+
+  /* Home */
+  .game-title { font-size: 40px; }
+  .home-stats { gap: 16px; padding: 12px 20px; flex-wrap: wrap; justify-content: center; }
+  .home-stat-val { font-size: 18px; }
+
+  /* Map */
+  .mission-grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; }
+  .mission-icon { font-size: 24px; }
+  .mission-name { font-size: 13px; }
+  .mission-sub  { font-size: 11px; }
+
+  /* Briefing */
+  .briefing-inner { padding: 24px 16px; gap: 12px; }
+  #brief-title { font-size: 22px; }
+  .briefing-actions { flex-direction: column; width: 100%; }
+  .briefing-actions button { width: 100%; }
+
+  /* Game HUD */
+  .game-hud { padding: 8px 12px; gap: 8px; }
+  .hud-center { display: none; }        /* hide progress bar — tight on mobile */
+  .streak-display, .score-display { font-size: 12px; }
+
+  /* Sort */
+  .sort-bins { flex-direction: column; align-items: center; width: 100%; }
+  .sort-bin  { width: 100%; max-width: 340px; padding: 14px 20px;
+               display: flex; align-items: center; gap: 14px; text-align: left; }
+  .sort-bin-icon  { font-size: 22px; flex-shrink: 0; }
+  .sort-card-display { padding: 20px; min-width: unset; width: 100%; }
+  .sort-card-text { font-size: 16px; }
+
+  /* Connect — stack vertically, tap to pick & match */
+  .connect-wrap { flex-direction: column; gap: 0; }
+  .connect-col.left, .connect-col.right { padding: 0; }
+  .connect-col.right { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 12px; }
+  .connect-svg { display: none; }   /* hide lines on mobile — matched items highlight instead */
+  .connect-node { padding: 14px; font-size: 14px; margin-bottom: 8px; }
+
+  /* Configure */
   .configure-wrap { flex-direction: column; }
-  .assemble-wrap  { flex-direction: column; }
-  .connect-wrap   { flex-direction: column; }
-  .game-hud       { flex-wrap: wrap; }
+  .config-panel, .scenario-panel { min-width: unset; }
+
+  /* Flow */
+  .flow-bank { gap: 8px; }
+  .flow-step { font-size: 12px; padding: 10px 12px; }
+
+  /* Feedback */
+  .feedback-card { padding: 24px 20px; }
+  .feedback-icon { font-size: 40px; }
+  .feedback-card h3 { font-size: 17px; }
+  .feedback-card p  { font-size: 14px; }
+
+  /* Complete */
+  .complete-inner { padding: 24px 16px; gap: 16px; }
+  #complete-title { font-size: 20px; }
+  .complete-actions { flex-direction: column; width: 100%; }
+  .complete-actions button { width: 100%; }
+
+  /* Achievements */
+  .ach-grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 16px; }
+
+  /* Buttons — bigger tap targets */
+  .btn-primary, .btn-ghost { padding: 16px 24px; font-size: 15px; min-height: 52px; }
+  .btn-back, .btn-back-sm  { min-height: 40px; }
 }
